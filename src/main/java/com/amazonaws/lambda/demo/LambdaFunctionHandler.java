@@ -18,6 +18,21 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 /*
+What is Lambda?
+	Lambda can listen to event (e.g. insert ins3).
+	Lambda can call another lambda. 
+	It can scale by itself. E.g. every request to lambda function creates its new instance. It auto scales itself.
+
+	If there are 2 HTTP requests sent to API Gateway and if API Gateway is connected to Lambda function as a trigger, then 2 instances of lambda functions will be created.	
+	You get 1 million free lambda invocations/month.	
+	Important: 
+	Load Balancer + EC2 instances combinations keep using the same EC2 instances for requests, whereas Lambda function auto scales itself. For million concurrent requests, a million lambda function instances will be created and executed. All have same code. 
+
+	If your lambda function is to run for more than 5 mins, then it’s not allowed. You need to break it in multiple lambda functions.
+	
+	Amazon publishes its new services to US East (N. Virginia) region first. To see what all services can trigger Lambda, you can go to this region and see.
+
+
 Information about Building Lambda Function
 http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html
 
