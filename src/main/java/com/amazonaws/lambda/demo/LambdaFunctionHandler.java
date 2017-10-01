@@ -52,8 +52,13 @@ Integrating with AWS API Gateway:
 	Create an API with POST. As an integrated resource, use this lambda function.
 	If you want, you can create a stage for this API and get the API link that you can hit through browser or you can just use testing tool of aws console.
 
-input: {"firstName":"Tushar","lastName":"Chokshi"}
-	
+Testing Gateway API
+	https://<<id of api>>.execute-api.us-west-2.amazonaws.com/prod/
+	Method: POST
+	Request Body: {"firstName":"Tushar","lastName":"Chokshi"}
+
+You can test with Gateway API also. 
+You can go to aws console of that lambda function and test the lambda function using above Request Body.
 */
 public class LambdaFunctionHandler implements RequestHandler<RequestClass, ResponseClass> {
 
