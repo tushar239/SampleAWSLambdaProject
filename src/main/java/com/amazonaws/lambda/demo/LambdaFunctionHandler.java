@@ -43,6 +43,9 @@ You use context.getRemainingTimeInImills() to know how much time remained from t
 
 This function is creating a record in DynamoDB. For that, either this function needs to access DynamoDB using access credentials or you need to create and assign a Role to this function that can access DynamoDB.
 
+Pre-requisite:
+you need to have a 'person' table created in DynamoDB.
+
 Integrating with AWS API Gateway:
 	Create an API with POST. As an integrated resource, use this lambda function.
 	If you want, you can create a stage for this API and get the API link that you can hit through browser or you can just use testing tool of aws console.
