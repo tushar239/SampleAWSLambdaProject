@@ -35,6 +35,8 @@ Context object
 http://docs.aws.amazon.com/lambda/latest/dg/java-context-object.html
 
 Here is the Sample lambda java function that takes json as input and outputs a json.
+It writes a record in DynamoDB and SNS Topic.
+
 Right click on the project and run this function. This function will be deployed to your AWS account and then it will be run.
 While deploying, it may ask you to provide certain information like Role (what permissions this lambda function should have).
 If you do not have any role already created, you can let it create a default one. But for this code, it will require access to DynamoDB. So, create a role that has full access to DynamoDB (or at least get/put/list access to DynamoDB).
