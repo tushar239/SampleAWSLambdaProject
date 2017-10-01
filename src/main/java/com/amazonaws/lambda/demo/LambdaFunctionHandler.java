@@ -59,6 +59,8 @@ Testing Gateway API
 
 You can test with Gateway API also. 
 You can go to aws console of that lambda function and test the lambda function using above Request Body.
+
+If you want to go one more step ahead, you can create a static website in S3 and call API Gateway's API from html page of the website instead of using rest tool.
 */
 public class LambdaFunctionHandler implements RequestHandler<RequestClass, ResponseClass> {
 
