@@ -55,55 +55,41 @@ input: {"firstName":"Tushar","lastName":"Chokshi"}
 */
 public class LambdaFunctionHandler implements RequestHandler<RequestClass, ResponseClass> {
 
-    @Override
-    public ResponseClass handleRequest(RequestClass input, Context context) {
-    	
-    		// You can see System.out, System.err, logger logs in CloudWatch.
-        context.getLogger().log("Input: " + input.toString());
-        
-        System.out.println("Function name: " + context.getFunctionName());
-        System.out.println("Max mem allocated: " + context.getMemoryLimitInMB());
-        System.out.println("Time remaining in milliseconds: " + context.getRemainingTimeInMillis());
-        System.out.println("CloudWatch log stream name: " + context.getLogStreamName());
-        System.out.println("CloudWatch log group name: " + context.getLogGroupName());
-        
-        
-        DynamoDB dynamoDB = getDynamoDbHandler();
+	private static SnsTopicOperations sns = new SnsTopicOperations();
+	private static String topicArn;
+	static {
+		topicArn = SnsTopicOperations.createTopic("TopicForInputFromMyFirstLambdaFunction");
+		SnsTopicOperations.subscribeEmailToTopic(topicArn, "tushar239@gmail.com");
+		// you need to accept subscription by going into your email
+	}
 
-        Table table = dynamoDB.getTable("person");
-        
-        String id = "1";
-        try {
-            System.out.println("Adding a new item...");
-            PutItemOutcome outcome = table
-                    .putItem(
-                            new Item()
-                                    .withPrimaryKey("id", id)
-                                    .with("firstName", input.getFirstName())
-                                    .with("lastName", input.getLastName()));
+	@Override
+	public ResponseClass handleRequest(RequestClass input, Context context) {
 
-            System.out.println("PutItem succeeded:\n" + outcome.getPutItemResult());
+		// You can see System.out, System.err, logger logs in CloudWatch.
+		context.getLogger().log("Input: " + input.toString());
 
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        
-        ResponseClass res = new ResponseClass();
-        res.setId(id);
-        res.setRequestClass(input);
-        
-        return res;
-    }
+		System.out.println("Function name: " + context.getFunctionName());
+		System.out.println("Max mem allocated: " + context.getMemoryLimitInMB());
+		System.out.println("Time remaining in milliseconds: " + context.getRemainingTimeInMillis());
+		System.out.println("CloudWatch log stream name: " + context.getLogStreamName());
+		System.out.println("CloudWatch log group name: " + context.getLogGroupName());
 
-    protected static DynamoDB getDynamoDbHandler() {
-	    	// you don't need to set this credentials as this lambda function is assigned a role that can access DynamoDB.
-        //AWSCredentials awsCredentials = new BasicAWSCredentials(Credentials.access_key_id, Credentials.secret_access_key);
-        AmazonDynamoDB client = new AmazonDynamoDBClient();
-        client.setRegion(Region.getRegion(Regions.US_WEST_2));
+		// put record in DynamoDB
+		String id = DynamoDBOperations.putRecordInDynamoDB(input);
 
-        DynamoDB dynamoDB = new DynamoDB(client);
+		ResponseClass res = new ResponseClass();
+		res.setId(id);
+		res.setRequestClass(input);
 
-        return dynamoDB;
+		// publish message to topic
+		try {
+			sns.publishMessageToTopic(input, topicArn);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 
-    }
+		return res;
+	}
+
 }
