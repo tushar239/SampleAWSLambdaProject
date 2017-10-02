@@ -1,19 +1,5 @@
 package com.amazonaws.lambda.demo;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
-import com.amazonaws.services.dynamodbv2.document.Table;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
@@ -35,6 +21,7 @@ What is Lambda?
 
 Information about Building Lambda Function
 http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html
+http://docs.aws.amazon.com/lambda/latest/dg/java-handler-using-predefined-interfaces.html
 
 You can write python and node.js code for lambda function directly in aws console, but you cannot do the same with java code.
 For Java code based lambda, you need to implement Java code in editor and then upload a jar file in aws console.
@@ -76,6 +63,13 @@ You can test with Gateway API also.
 You can go to aws console of that lambda function and test the lambda function using above Request Body.
 
 If you want to go one more step ahead, you can create a static website in S3 and call API Gateway's API from html page of the website instead of using rest tool.
+
+You have 3 options to create Lambda Handler
+- Using RequestHandler
+- Using RequestStreamHandler (you get InputStream to retrieve an input and OutputStream to write an output)
+- Your own Java class with some method (Hello.java). Here you have total control over the handler method name and exceptions to be thrown. Above two options do no provide facility to throw exceptions that you want.
+  Ideally, Lambda is a function and it should not throw an exception, but if you want to throw it and in API gatway, if you want to translate these exceptions into specific http status code, then you can do so.
+  See Hello.hava. 
 */
 public class LambdaFunctionHandler implements RequestHandler<RequestClass, ResponseClass> {
 
