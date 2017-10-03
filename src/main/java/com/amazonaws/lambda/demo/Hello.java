@@ -30,7 +30,7 @@ public class Hello {
 	
 	 */
 	public String myHandlerTakingParams(Map<String, Integer> params, Context context) throws Exception{
-		if(params == null || params.size() == 0 || !params.containsKey("myCount")) throw new BadRequestException("BAD_REQ: Check your count again. It can't be <=0");
+		if(params == null || params.size() == 0 || !params.containsKey("myCount")) throw new BadRequestException("BAD_REQ: myCount is a required parameter");
 		
 		Integer myCount = params.get("myCount");
 		
