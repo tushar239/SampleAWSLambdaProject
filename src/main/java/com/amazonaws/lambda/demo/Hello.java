@@ -1,5 +1,7 @@
 package com.amazonaws.lambda.demo;
 
+import java.util.Map;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
@@ -21,4 +23,18 @@ public class Hello {
 		logger.log("received : " + myCount);
 		return String.valueOf(myCount);
 	}
+
+	/*
+	For this,
+	You upload lambda function with Handler 'com.amazonaws.lambda.demo.Hello::myHandlerTakingParams'.
+	
+	 */
+	public String myHandlerTakingParams(Map<String, Integer> params, Context context) throws Exception{
+		if(params == null || params.size() == 0 || !params.containsKey("myCount")) throw new BadRequestException("BAD_REQ: Check your count again. It can't be <=0");
+		
+		Integer myCount = params.get("myCount");
+		
+		return myHandler(myCount, context);
+	}
+
 }
