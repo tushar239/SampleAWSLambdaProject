@@ -25,9 +25,7 @@ public class Hello {
 	}
 
 	/*
-	For this,
-	You upload lambda function with Handler 'com.amazonaws.lambda.demo.Hello::myHandlerTakingParams'.
-	
+	 See how to test this function with API Gateway in 'Convert Query Params of GET and body of POST rest endpoints into a json body acceptable by Lambda function'
 	 */
 	public String myHandlerTakingParams(Map<String, Integer> params, Context context) throws Exception{
 		if(params == null || params.size() == 0 || !params.containsKey("myCount")) throw new BadRequestException("BAD_REQ: myCount is a required parameter");
